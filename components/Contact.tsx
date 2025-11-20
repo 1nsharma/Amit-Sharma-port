@@ -1,30 +1,44 @@
-
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion'; // Upgrade: Animate form fields and success message
 import Section from './Section';
 import { useTranslation } from '../i18n';
 
-const Contact: React.FC = () => {
+interface ContactProps {
+  isDarkMode: boolean; // From App theme
+}
+
+const Contact: React.FC<ContactProps> = ({ isDarkMode }) => {
   const { t } = useTranslation();
   const [formState, setFormState] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errors, setErrors] = useState({ name: '', email: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false); // Upgrade: Loading state for submit
+
+  // Upgrade: Auto-reset success after 5s
+  useEffect(() => {
+    if (status === 'success') {
+      const timer = setTimeout(() => {
+        setStatus('idle');
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [status]);
 
   const validate = () => {
     const newErrors = { name: '', email: '', message: '' };
     let isValid = true;
-    if (!formState.name) {
+    if (!formState.name.trim()) {
       newErrors.name = t('contact.form.errors.nameRequired');
       isValid = false;
     }
-    if (!formState.email) {
+    if (!formState.email.trim()) {
       newErrors.email = t('contact.form.errors.emailRequired');
       isValid = false;
     } else if (!/\S+@\S+\.\S+/.test(formState.email)) {
       newErrors.email = t('contact.form.errors.emailInvalid');
       isValid = false;
     }
-    if (!formState.message) {
+    if (!formState.message.trim()) {
       newErrors.message = t('contact.form.errors.messageRequired');
       isValid = false;
     }
@@ -34,80 +48,227 @@ const Contact: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
+    // Clear error on type
+    if (errors[e.target.name as keyof typeof errors]) {
+      setErrors({ ...errors, [e.target.name]: '' });
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) {
       setStatus('error');
       return;
     }
-    // In a real app, you'd send this to a backend service
-    console.log('Form submitted:', formState);
-    setStatus('success');
-    setFormState({ name: '', email: '', message: '' });
+    setIsSubmitting(true);
+    setStatus('idle'); // Reset status during submit
+    try {
+      // In a real app, POST to backend (e.g., EmailJS or API)
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      console.log('Form submitted:', formState);
+      setStatus('success');
+      setFormState({ name: '', email: '', message: '' });
+    } catch (error) {
+      setStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const formVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const fieldVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0 },
+  };
+
+  const successVariants = {
+    hidden: { scale: 0.9, opacity: 0 },
+    visible: { scale: 1, opacity: 1, transition: { type: 'spring', stiffness: 300 } },
   };
 
   return (
-    <Section id="contact">
-      <h2 className="text-center mb-4 font-poppins text-3xl md:text-5xl font-bold text-white">
+    <Section id="contact" className="font-mono">
+      <motion.h2
+        className={`text-center mb-4 text-3xl md:text-5xl font-bold uppercase tracking-tight ${isDarkMode ? 'text-eco-green' : 'text-black'}`}
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+      >
         {t('contact.title')}
-      </h2>
-      <div className="text-center max-w-lg mx-auto">
-        <p className="text-lg text-slate-300 mb-8">{t('contact.subtitle')}</p>
+      </motion.h2>
+      <motion.div
+        className="text-center max-w-lg mx-auto"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        viewport={{ once: true }}
+      >
+        <motion.p
+          className={`text-lg mb-8 ${isDarkMode ? 'text-sun-yellow/80' : 'text-slate-700'} font-mono`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+        >
+          {t('contact.subtitle')}
+        </motion.p>
         
         {status === 'success' ? (
-            <div className="bg-green-500/20 text-green-300 border border-green-500 p-6 rounded-xl text-center">
-                <h3 className="text-2xl font-bold mb-2">{t('contact.feedback.success.title')}</h3>
-                <p>{t('contact.feedback.success.message')}</p>
-            </div>
+          <motion.div
+            variants={successVariants}
+            initial="hidden"
+            animate="visible"
+            className={`border-4 p-6 rounded-2xl text-center ${
+              isDarkMode
+                ? 'bg-red-900/5 text-eco-green border-eco-green'
+                : 'bg-eco-green/10 text-black border-eco-green'
+            }`}
+            role="alert"
+            aria-live="polite"
+          >
+            <motion.h3
+              className="text-2xl font-bold mb-2 uppercase"
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              {t('contact.feedback.success.title')}
+            </motion.h3>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="font-mono"
+            >
+              {t('contact.feedback.success.message')}
+            </motion.p>
+          </motion.div>
         ) : (
-            <form onSubmit={handleSubmit} className="bg-black/20 p-6 sm:p-8 rounded-2xl border border-white/10 space-y-4" noValidate>
-              <div>
-                <input 
-                  type="text" 
-                  name="name"
-                  placeholder={t('contact.form.name')}
-                  required 
-                  value={formState.name}
-                  onChange={handleChange}
-                  className={`w-full p-3 bg-slate-700/50 text-white rounded-lg border ${errors.name ? 'border-red-500' : 'border-slate-600'} focus:ring-2 focus:ring-secondary focus:outline-none transition`}
-                />
-                {errors.name && <p className="text-red-400 text-sm mt-1">{errors.name}</p>}
-              </div>
-              <div>
-                <input 
-                  type="email" 
-                  name="email"
-                  placeholder={t('contact.form.email')}
-                  required 
-                  value={formState.email}
-                  onChange={handleChange}
-                  className={`w-full p-3 bg-slate-700/50 text-white rounded-lg border ${errors.email ? 'border-red-500' : 'border-slate-600'} focus:ring-2 focus:ring-secondary focus:outline-none transition`}
-                />
-                {errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
-              </div>
-              <div>
-                <textarea 
-                  rows={5} 
-                  name="message"
-                  placeholder={t('contact.form.message')}
-                  required
-                  value={formState.message}
-                  onChange={handleChange}
-                  className={`w-full p-3 bg-slate-700/50 text-white rounded-lg border ${errors.message ? 'border-red-500' : 'border-slate-600'} focus:ring-2 focus:ring-secondary focus:outline-none transition`}
-                />
-                {errors.message && <p className="text-red-400 text-sm mt-1">{errors.message}</p>}
-              </div>
-              <button 
-                type="submit" 
-                className="w-full p-3 text-lg font-bold bg-secondary text-white rounded-lg shadow-lg hover:bg-amber-500 transition-transform duration-300 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-amber-300"
-              >
-                {t('contact.form.submit')}
-              </button>
-            </form>
+          <motion.form
+            onSubmit={handleSubmit}
+            className={`p-6 sm:p-8 rounded-2xl border-4 space-y-4 ${
+              isDarkMode
+                ? 'bg-black text-white border-black'
+                : 'bg-paper-white text-black border-black'
+            } shadow-[6px_6px_0px_0px_rgba(0,0,0,0.5)]`}
+            variants={formVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            noValidate
+          >
+            <motion.div variants={fieldVariants}>
+              <input 
+                type="text" 
+                name="name"
+                placeholder={t('contact.form.name')}
+                required 
+                value={formState.name}
+                onChange={handleChange}
+                aria-invalid={!!errors.name}
+                aria-describedby={errors.name ? 'name-error' : undefined}
+                className={`w-full p-3 rounded-lg border-2 focus:ring-4 focus:outline-none transition font-mono uppercase tracking-tight ${
+                  isDarkMode
+                    ? `bg-black/30 text-white border-black ${errors.name ? 'ring-2 ring-red-600' : ''}`
+                    : `bg-white/90 text-black border-black ${errors.name ? 'ring-2 ring-red-600' : ''}`
+                }`}
+              />
+              {errors.name && (
+                <motion.p
+                  id="name-error"
+                  className={`text-sm mt-1 ${isDarkMode ? 'text-red-400' : 'text-red-600'} font-mono`}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                >
+                  {errors.name}
+                </motion.p>
+              )}
+            </motion.div>
+            <motion.div variants={fieldVariants}>
+              <input 
+                type="email" 
+                name="email"
+                placeholder={t('contact.form.email')}
+                required 
+                value={formState.email}
+                onChange={handleChange}
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? 'email-error' : undefined}
+                className={`w-full p-3 rounded-lg border-2 focus:ring-4 focus:outline-none transition font-mono uppercase tracking-tight ${
+                  isDarkMode
+                    ? `bg-black/30 text-white border-black ${errors.email ? 'ring-2 ring-red-600' : ''}`
+                    : `bg-white/90 text-black border-black ${errors.email ? 'ring-2 ring-red-600' : ''}`
+                }`}
+              />
+              {errors.email && (
+                <motion.p
+                  id="email-error"
+                  className={`text-sm mt-1 ${isDarkMode ? 'text-red-400' : 'text-red-600'} font-mono`}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                >
+                  {errors.email}
+                </motion.p>
+              )}
+            </motion.div>
+            <motion.div variants={fieldVariants}>
+              <textarea 
+                rows={5} 
+                name="message"
+                placeholder={t('contact.form.message')}
+                required
+                value={formState.message}
+                onChange={handleChange}
+                aria-invalid={!!errors.message}
+                aria-describedby={errors.message ? 'message-error' : undefined}
+                className={`w-full p-3 rounded-lg border-2 focus:ring-4 focus:outline-none transition resize-none font-mono ${
+                  isDarkMode
+                    ? `bg-black/30 text-white border-black ${errors.message ? 'ring-2 ring-red-600' : ''}`
+                    : `bg-white/90 text-black border-black ${errors.message ? 'ring-2 ring-red-600' : ''}`
+                }`}
+              />
+              {errors.message && (
+                <motion.p
+                  id="message-error"
+                  className={`text-sm mt-1 ${isDarkMode ? 'text-red-400' : 'text-red-600'} font-mono`}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                >
+                  {errors.message}
+                </motion.p>
+              )}
+            </motion.div>
+            <motion.button 
+              type="submit" 
+              disabled={isSubmitting}
+              className={`w-full p-3 text-lg font-bold rounded-lg shadow-[4px_4px_0px_0px_#000] transform transition-all duration-300 focus:outline-none focus:ring-4 ${
+                isSubmitting
+                  ? 'opacity-50 cursor-not-allowed'
+                  : 'hover:scale-105 active:scale-95'
+              } ${
+                isDarkMode
+                  ? 'bg-eco-green text-black ring-eco-green'
+                  : 'bg-eco-green text-black ring-eco-green'
+              } uppercase font-mono`}
+              variants={fieldVariants}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              aria-label={t('contact.form.submit')}
+            >
+              {isSubmitting ? t('contact.form.submitting') : t('contact.form.submit')}
+            </motion.button>
+          </motion.form>
         )}
-      </div>
+      </motion.div>
     </Section>
   );
 };
