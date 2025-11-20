@@ -8,7 +8,7 @@
     <meta name="description" content="Amit Sharma - AI Expert and Web Developer specializing in AI-generated content, frontend development, latest 2025 tech trends for students, free AI tools guide, and student workshops. Freelancing in Kanpur.">
     <meta name="keywords" content="AI Expert 2025, Web Developer, AI Image Generation, AI Video Creation, Frontend Development, React.js, Python, Midjourney, Latest AI Trends, Student Tech Help, Free AI Tools Guide, AI Workshops for Students, Kanpur Freelancer">
     <meta name="author" content="Amit Sharma">
-    <meta name="theme-color" content="#111827">
+    <meta name="theme-color" content="#050505">
     
     <link rel="canonical" href="https://amitsharma.vercel.app">
     <link rel="alternate" hreflang="hi-IN" href="https://amitsharma.vercel.app">
@@ -28,10 +28,10 @@
     <meta name="twitter:description" content="Latest AI/IT Trends, Free Tools Guide, Student Help & Workshop Ideas. Hire for AI Projects!">
     <meta name="twitter:image" content="https://i.ibb.co/3s7xT6b/profile.jpg">
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts (mono + display) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -41,37 +41,76 @@
         theme: {
           extend: {
             colors: {
-              primary: '#8b5cf6', // Purple
-              secondary: '#f59e0b', // Amber
-              accent: '#ec4899', // Pink
-              dark: '#111827', // Dark Gray
-              light: '#f8fafc', // Off-white
+              // Amvision tokens
+              'eco-green': '#00C48C',
+              'electric-blue': '#00A3FF',
+              'sun-yellow': '#FFD166',
+              'am-red': '#FF4D4F',
+              'paper-black': '#000000',
+              'paper-white': '#F8F8F8',
+              // keep some legacy tokens if needed
+              primary: '#00A3FF',
+              secondary: '#FFD166',
+              accent: '#00C48C',
             },
             fontFamily: {
-              inter: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
               poppins: ['Poppins', 'sans-serif'],
+            },
+            boxShadow: {
+              'am-strong': '6px 6px 0px 0px rgba(0,0,0,0.65)',
             }
           }
         }
       }
     </script>
     
-    <!-- Custom Styles -->
+    <!-- Custom Styles (Tailwind layer) -->
     <style type="text/tailwindcss">
         @layer base {
-            body {
-                @apply font-inter bg-gradient-to-br from-indigo-700 via-purple-600 to-pink-500 text-slate-100;
+            /* Global Amvision look — dark/retro */
+            html, body {
+                @apply bg-paper-black text-paper-white font-mono antialiased;
+                background: linear-gradient(180deg, rgba(2,6,23,1) 0%, rgba(6,10,20,1) 35%, rgba(12,8,25,1) 100%);
             }
-            /* Custom scrollbar */
+
+            /* strong black borders everywhere */
+            :root {
+              --am-border: 4px;
+            }
+
+            /* Custom scrollbar — retro terminal style */
             ::-webkit-scrollbar {
-                width: 8px;
+                width: 10px;
+                height: 10px;
             }
             ::-webkit-scrollbar-track {
-                @apply bg-slate-800;
+                background: #070707;
             }
             ::-webkit-scrollbar-thumb {
-                @apply bg-primary rounded-full;
+                background: linear-gradient(180deg,var(--tw-gradient-stops));
+                background-image: linear-gradient(180deg, #00C48C 0%, #00A3FF 100%);
+                border-radius: 9999px;
+                border: 2px solid #000;
             }
+
+            /* Headlines and uppercase styling */
+            h1, h2, h3, h4, h5, h6 {
+              @apply uppercase tracking-tight font-bold;
+            }
+
+            /* Buttons default */
+            .btn-am {
+              @apply inline-block px-6 py-2 rounded-2xl font-bold uppercase border-black border-[4px] shadow-am-strong;
+            }
+
+            /* Cards */
+            .card-am {
+              @apply rounded-2xl border-[4px] border-black p-6 bg-black/20 shadow-am-strong;
+            }
+
+            /* Small utility */
+            .mono-small { font-family: 'JetBrains Mono', monospace; font-size: .85rem; }
         }
     </style>
 
