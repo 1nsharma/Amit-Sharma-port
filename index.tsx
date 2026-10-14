@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 // FIX: Changed react-router-dom import to a wildcard import to address issue where 'BrowserRouter' was not found as an exported member.
 import * as ReactRouterDom from 'react-router-dom';
 import App from './App';
+import './styles.css';
 import { I18nProvider } from './i18n';
 
 const rootElement = document.getElementById('root');
