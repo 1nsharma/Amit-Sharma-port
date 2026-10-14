@@ -36,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode }) => {
 
   return (
     <header
-      className={`relative overflow-hidden pb-16 border-b-4 ${
+      className={`site-hero relative overflow-hidden pb-16 border-b-4 ${
         isDarkMode ? 'bg-black text-white border-black' : 'bg-paper-white text-black border-black'
       }`}
       role="banner"
@@ -68,7 +68,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode }) => {
       <Section>
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
           <motion.div
-            className="w-40 h-40 md:w-48 md:h-48 mx-auto mb-6 rounded-full overflow-hidden border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,0.6)]"
+            className="hero-avatar w-40 h-40 md:w-48 md:h-48 mx-auto mb-6 rounded-full overflow-hidden border-4 border-black"
             variants={floatVariants}
             animate="animate"
             whileHover={{ scale: 1.04 }}
@@ -85,7 +85,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode }) => {
 
           <motion.h1
             id="header-name"
-            className="font-mono text-4xl md:text-6xl font-extrabold mb-3 uppercase tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-eco-green to-electric-blue"
+            className="hero-title font-mono text-4xl md:text-6xl font-extrabold mb-3 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-eco-green to-electric-blue"
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -95,7 +95,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode }) => {
           </motion.h1>
 
           <motion.p
-            className={`text-lg md:text-2xl mb-2 font-mono ${
+            className={`hero-tagline text-lg md:text-2xl mb-2 font-mono ${
               isDarkMode ? 'text-sun-yellow/90' : 'text-slate-800'
             } uppercase`}
             initial={{ opacity: 0 }}
@@ -108,7 +108,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode }) => {
 
           <motion.p
             id="header-desc"
-            className={`max-w-3xl mx-auto text-sm md:text-base mb-8 font-mono ${
+            className={`hero-description max-w-3xl mx-auto text-sm md:text-base mb-8 font-mono ${
               isDarkMode ? 'text-slate-400' : 'text-slate-600'
             }`}
             initial={{ opacity: 0 }}
@@ -119,10 +119,10 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode }) => {
             {t('header.subTagline')}
           </motion.p>
 
-          <div className="flex flex-wrap justify-center items-center gap-4">
+          <div className="hero-actions flex flex-wrap justify-center items-center gap-4">
             <motion.a
               href="#contact"
-              className="px-8 py-3 font-bold rounded-full bg-eco-green text-black border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,0.6)] transform transition-all duration-300 uppercase font-mono"
+              className="hero-button hero-button--primary px-8 py-3 font-bold rounded-full bg-eco-green text-black transform transition-all duration-300"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               initial={{ opacity: 0, y: 20 }}
@@ -136,7 +136,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode }) => {
 
             <motion.a
               href="#workshops"
-              className={`px-8 py-3 font-semibold rounded-full backdrop-blur-md border-4 border-black/20 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.25)] transform transition-all duration-300 uppercase font-mono ${
+              className={`hero-button hero-button--secondary px-8 py-3 font-semibold rounded-full backdrop-blur-md border-4 border-black/20 transform transition-all duration-300 ${
                 isDarkMode
                   ? 'bg-black/30 text-sun-yellow border-black'
                   : 'bg-paper-white/60 text-electric-blue border-black'
@@ -156,7 +156,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode }) => {
               href="/resume.html"
               target="_blank"
               rel="noopener noreferrer"
-              className={`px-8 py-3 font-semibold rounded-full backdrop-blur-md border-4 border-black/20 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.25)] transform transition-all duration-300 uppercase font-mono ${
+              className={`hero-button hero-button--secondary px-8 py-3 font-semibold rounded-full backdrop-blur-md border-4 border-black/20 transform transition-all duration-300 ${
                 isDarkMode
                   ? 'bg-black/30 text-eco-green border-black'
                   : 'bg-paper-white/60 text-electric-blue border-black'
