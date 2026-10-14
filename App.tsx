@@ -1,6 +1,6 @@
 
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 // FIX: Changed react-router-dom import to a wildcard import to address issues where its members were not found as exports.
 import * as ReactRouterDom from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -88,8 +88,8 @@ const useActiveSection = (sectionIds: string[]): string => {
 // Component to render the main portfolio page layout
 const PortfolioPage: React.FC = () => (
   <>
-    <Header />
-    <About />
+    <Header isDarkMode={isDarkMode} />
+    <About isDarkMode={isDarkMode} />
     <Skills />
     <Experience />
     <Education />
@@ -108,7 +108,7 @@ const App: React.FC = () => {
   const { t } = useTranslation();
   const location = ReactRouterDom.useLocation();
 
-  const sectionIds = Object.keys(t<{[key:string]: string}>('sections'));
+  const sectionIds = useMemo(() => Object.keys(t<{[key:string]: string}>('sections')), [t]);
   const activeSection = useActiveSection(sectionIds);
   
   // Scroll to top on route change for a better navigation experience
@@ -117,13 +117,13 @@ const App: React.FC = () => {
   }, [location.pathname]);
 
   return (
-    <div className="font-inter text-slate-100 transition-colors duration-300">
+    <div className="site-app font-inter transition-colors duration-300">
       <ScrollProgressBar />
       <Navbar activeSection={activeSection} isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
       <main>
         <ReactRouterDom.Routes>
           <ReactRouterDom.Route path="/" element={
-              <div className="container mx-auto max-w-7xl my-12 p-4 sm:p-8 bg-black/20 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20">
+              <div className="portfolio-shell">
                 <PortfolioPage />
               </div>
             } 
