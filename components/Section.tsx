@@ -42,7 +42,7 @@ const Section: React.FC<SectionProps> = ({ id, children, className = '' }) => {
     <section
       id={id}
       ref={sectionRef}
-      className={`py-12 md:py-16 transition-all duration-1000 ease-out border-b-2 border-white/10 last:border-b-0 ${
+      className={`site-section py-12 md:py-16 transition-all duration-1000 ease-out border-b-2 border-white/10 last:border-b-0 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       } ${className}`}
     >
@@ -54,7 +54,7 @@ const Section: React.FC<SectionProps> = ({ id, children, className = '' }) => {
 };
 
 export const SectionTitle: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <h2 className="text-center mb-12 md:mb-16 font-poppins text-3xl md:text-4xl lg:text-5xl font-bold">
+  <h2 className="section-heading text-center mb-12 md:mb-16 font-poppins text-3xl md:text-4xl lg:text-5xl font-bold">
     <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
       {children}
     </span>
