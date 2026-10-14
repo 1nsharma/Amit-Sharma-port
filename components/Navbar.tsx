@@ -25,6 +25,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, isDarkMode, toggleTheme 
             <a
               key={id}
               href={`#${id}`}
+              aria-current={activeSection === id ? 'location' : undefined}
               className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300 relative ${
                 activeSection === id
                   ? 'text-primary dark:text-secondary'
