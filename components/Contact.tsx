@@ -63,12 +63,23 @@ const Contact: React.FC<ContactProps> = ({ isDarkMode }) => {
     setIsSubmitting(true);
     setStatus('idle'); // Reset status during submit
     try {
-      // In a real app, POST to backend (e.g., EmailJS or API)
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-      console.log('Form submitted:', formState);
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formState.name.trim(),
+          email: formState.email.trim(),
+          message: formState.message.trim(),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Contact submission failed');
+      }
+
       setStatus('success');
       setFormState({ name: '', email: '', message: '' });
-    } catch (error) {
+    } catch {
       setStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -153,6 +164,11 @@ const Contact: React.FC<ContactProps> = ({ isDarkMode }) => {
             </motion.p>
           </motion.div>
         ) : (
+          {status === 'error' && (
+            <p className={`mb-4 rounded-lg border-2 border-red-500 p-3 text-left font-mono ${isDarkMode ? 'text-red-300' : 'text-red-700'}`} role="alert" aria-live="polite">
+              {t('contact.feedback.error.message')}
+            </p>
+          )}
           <motion.form
             onSubmit={handleSubmit}
             className={`p-6 sm:p-8 rounded-2xl border-4 space-y-4 ${
