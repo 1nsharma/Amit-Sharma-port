@@ -252,6 +252,9 @@ export const translations = {
           success: {
               title: 'Thank You! 🚀',
               message: "Your message has been sent. I'll get back to you within 24 hours."
+          },
+          error: {
+              message: 'We could not send your message right now. Please try again later or contact us directly by email.'
           }
       }
   },

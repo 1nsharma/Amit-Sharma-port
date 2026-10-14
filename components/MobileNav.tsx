@@ -16,7 +16,7 @@ const MobileNav: React.FC = () => {
     ];
 
     return (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 z-50">
+        <div className="mobile-nav md:hidden fixed bottom-0 left-0 right-0 z-50">
             <div className="bg-light/80 dark:bg-dark/80 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] dark:shadow-[0_-2px_10px_rgba(0,0,0,0.2)]">
                 <div className="container mx-auto px-4 h-16 flex justify-around items-center">
                     {mobileNavLinks.map(link => (
