@@ -15,7 +15,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, isDarkMode, toggleTheme 
   const sections = t<{[key: string]: string}>('sections');
   
   return (
-    <nav className="hidden md:flex sticky top-0 z-50 bg-light/80 dark:bg-dark/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300">
+    <nav className="site-nav hidden md:flex sticky top-0 z-50 bg-light/80 dark:bg-dark/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300">
       <div className="container mx-auto px-6 lg:px-8 flex justify-between items-center h-16">
         <div className="font-poppins font-bold text-xl text-slate-800 dark:text-white">
           <a href="#">{t('header.name')}</a>
