@@ -10,14 +10,14 @@ import * as ReactRouterDom from 'react-router-dom';
 const ProjectCard: React.FC<{ project: Project }> = ({ project }) => (
     <ReactRouterDom.Link 
         to={`/projects/${project.id}`}
-        className="group bg-black/20 rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer hover:shadow-secondary/20"
+        className="project-card group bg-black/20 rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer"
     >
-        <div className="relative h-48 overflow-hidden">
+        <div className="project-image relative h-48 overflow-hidden">
             <img src={project.imageUrl} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"/>
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
             <div className="absolute bottom-4 left-4 text-white text-5xl">{project.icon}</div>
         </div>
-        <div className="p-6">
+        <div className="project-content p-6">
             <h3 className="font-poppins text-xl font-bold text-secondary mb-2">{project.title}</h3>
             <p className="text-slate-300 text-sm mb-4">{project.description}</p>
             <div className="flex flex-wrap gap-2">
