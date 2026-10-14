@@ -164,7 +164,8 @@ const Contact: React.FC<ContactProps> = ({ isDarkMode }) => {
             </motion.p>
           </motion.div>
         ) : (
-          {status === 'error' && (
+          <>
+            {status === 'error' && (
             <p className={`mb-4 rounded-lg border-2 border-red-500 p-3 text-left font-mono ${isDarkMode ? 'text-red-300' : 'text-red-700'}`} role="alert" aria-live="polite">
               {t('contact.feedback.error.message')}
             </p>
@@ -283,6 +284,7 @@ const Contact: React.FC<ContactProps> = ({ isDarkMode }) => {
               {isSubmitting ? t('contact.form.submitting') : t('contact.form.submit')}
             </motion.button>
           </motion.form>
+          </>
         )}
       </motion.div>
     </Section>
